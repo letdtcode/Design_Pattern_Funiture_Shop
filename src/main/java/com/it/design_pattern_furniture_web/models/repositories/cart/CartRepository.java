@@ -3,7 +3,6 @@ package com.it.design_pattern_furniture_web.models.repositories.cart;
 import com.it.design_pattern_furniture_web.models.entities.Cart;
 import com.it.design_pattern_furniture_web.models.entities.CartItem;
 import com.it.design_pattern_furniture_web.models.entities.Product;
-import com.it.design_pattern_furniture_web.models.services.CartService;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemCreateRequest;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemGetPagingRequest;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemUpdateRequest;

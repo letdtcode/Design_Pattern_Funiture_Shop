@@ -1,4 +1,4 @@
-package com.it.design_pattern_furniture_web.models.services;
+package com.it.design_pattern_furniture_web.models.services.cart;
 
 
 import com.it.design_pattern_furniture_web.models.repositories.cart.CartRepository;
