@@ -1,20 +1,22 @@
 package com.it.design_pattern_furniture_web.models.services.review;
 
-import models.repositories.review.ReviewRepository;
-import models.view_models.review_items.ReviewItemCreateRequest;
-import models.view_models.review_items.ReviewItemGetPagingRequest;
-import models.view_models.review_items.ReviewItemUpdateRequest;
-import models.view_models.review_items.ReviewItemViewModel;
+import com.it.design_pattern_furniture_web.models.repositories.review.ReviewRepository;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemViewModel;
 
 import java.util.ArrayList;
 
 public class ReviewService implements IReviewService {
     private static ReviewService instance = null;
-    public static ReviewService getInstance(){
-        if(instance == null)
+
+    public static ReviewService getInstance() {
+        if (instance == null)
             instance = new ReviewService();
         return instance;
     }
+
     @Override
     public int insertReviewItem(ReviewItemCreateRequest request) {
         return ReviewRepository.getInstance().insert(request);
@@ -29,6 +31,7 @@ public class ReviewService implements IReviewService {
     public boolean deleteReviewItem(Integer reviewItemId) {
         return ReviewRepository.getInstance().delete(reviewItemId);
     }
+
     @Override
     public ReviewItemViewModel retrieveReviewItemById(Integer reviewItemId) {
         return ReviewRepository.getInstance().retrieveById(reviewItemId);
@@ -56,7 +59,7 @@ public class ReviewService implements IReviewService {
 
     @Override
     public ArrayList<ReviewItemViewModel> retrieveUserReviewByProductId(Integer userId, Integer productId) {
-        return ReviewRepository.getInstance().retrieveUserReviewByProductId(userId,productId);
+        return ReviewRepository.getInstance().retrieveUserReviewByProductId(userId, productId);
     }
 
     @Override

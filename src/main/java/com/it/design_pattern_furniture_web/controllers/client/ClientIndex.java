@@ -1,13 +1,13 @@
 package com.it.design_pattern_furniture_web.controllers.client;
 
-import models.services.category.CategoryService;
-import models.services.product.ProductService;
-import models.view_models.categories.CategoryGetPagingRequest;
-import models.view_models.categories.CategoryViewModel;
-import models.view_models.products.ProductGetPagingRequest;
-import models.view_models.products.ProductViewModel;
-import utils.ServletUtils;
-import utils.constants.CATEGORY_STATUS;
+import com.it.design_pattern_furniture_web.models.services.category.CategoryService;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
+import com.it.design_pattern_furniture_web.models.view_models.categories.CategoryGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.categories.CategoryViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.constants.CATEGORY_STATUS;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,11 +26,10 @@ public class ClientIndex extends HttpServlet {
         ArrayList<ProductViewModel> products = ProductService.getInstance().retrieveAllProduct(req1);
         products.sort((o1, o2) -> (int) (o2.getAvgRating() - o1.getAvgRating()));
         ArrayList<ProductViewModel> popularProducts = new ArrayList<>();
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             try {
                 popularProducts.add(products.get(i));
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 break;
             }
         }
@@ -39,7 +38,7 @@ public class ClientIndex extends HttpServlet {
         categories.removeIf(x -> x.getParentCategoryId() != 0 || x.getStatus() == CATEGORY_STATUS.IN_ACTIVE);
         request.setAttribute("products", popularProducts);
         request.setAttribute("categories", categories);
-        ServletUtils.forward(request,response,"/views/client/index.jsp");
+        ServletUtils.forward(request, response, "/views/client/index.jsp");
     }
 
     @Override
