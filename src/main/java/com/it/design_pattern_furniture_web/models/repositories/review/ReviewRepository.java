@@ -1,30 +1,32 @@
 package com.it.design_pattern_furniture_web.models.repositories.review;
 
-import models.entities.Product;
-import models.entities.ProductImage;
-import models.entities.Review;
-import models.entities.ReviewItem;
-import models.services.review.ReviewService;
-import models.view_models.review_items.ReviewItemCreateRequest;
-import models.view_models.review_items.ReviewItemGetPagingRequest;
-import models.view_models.review_items.ReviewItemUpdateRequest;
-import models.view_models.review_items.ReviewItemViewModel;
+import com.it.design_pattern_furniture_web.models.entities.Product;
+import com.it.design_pattern_furniture_web.models.entities.ProductImage;
+import com.it.design_pattern_furniture_web.models.entities.Review;
+import com.it.design_pattern_furniture_web.models.entities.ReviewItem;
+import com.it.design_pattern_furniture_web.models.services.review.ReviewService;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemViewModel;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import utils.DateUtils;
-import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewRepository implements IReviewRepository {
     private static ReviewRepository instance = null;
-    public static ReviewRepository getInstance(){
-        if(instance == null)
+
+    public static ReviewRepository getInstance() {
+        if (instance == null)
             instance = new ReviewRepository();
         return instance;
     }
+
     @Override
     public int insert(ReviewItemCreateRequest request) {
         Session session = HibernateUtils.getSession();
@@ -47,12 +49,11 @@ public class ReviewRepository implements IReviewRepository {
             session.persist(reviewItem);
             reviewItemId = reviewItem.getReviewItemId();
             tx.commit();
-        }catch(Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             session.close();
         }
 
@@ -78,7 +79,8 @@ public class ReviewRepository implements IReviewRepository {
         session.close();
         return HibernateUtils.remove(reviewItem);
     }
-    private ReviewItemViewModel getReviewItemViewModel(ReviewItem reviewItem, Session session){
+
+    private ReviewItemViewModel getReviewItemViewModel(ReviewItem reviewItem, Session session) {
         ReviewItemViewModel reviewItemViewModel = new ReviewItemViewModel();
         //ProductViewModel product = ProductService.getInstance().retrieveProductById(reviewItem.getProductId());
 
@@ -86,17 +88,17 @@ public class ReviewRepository implements IReviewRepository {
         reviewItemViewModel.setReviewId(reviewItem.getReview().getReviewId());
         reviewItemViewModel.setContent(reviewItem.getContent());
         reviewItemViewModel.setProductId(reviewItem.getProduct().getProductId());
-        reviewItemViewModel.setDateCreated(DateUtils.dateTimeToStringWithFormat(reviewItem.getCreatedAt(),"yyyy-MM-dd HH:mm:ss"));
+        reviewItemViewModel.setDateCreated(DateUtils.dateTimeToStringWithFormat(reviewItem.getCreatedAt(), "yyyy-MM-dd HH:mm:ss"));
         reviewItemViewModel.setRating(reviewItem.getRating());
         Query q = session.createQuery("select r.user.userId from Review r where reviewId=:s1");
-        q.setParameter("s1",reviewItem.getReview().getReviewId());
-        int userId = (int)q.getSingleResult();
+        q.setParameter("s1", reviewItem.getReview().getReviewId());
+        int userId = (int) q.getSingleResult();
         reviewItemViewModel.setUserId(reviewItem.getReview().getReviewId());
         reviewItemViewModel.setStatus(reviewItem.getStatus());
 
 
         Query r = session.createQuery("from ProductImage where product.productId=:s1 and isDefault=true");
-        r.setParameter("s1",reviewItem.getProduct().getProductId());
+        r.setParameter("s1", reviewItem.getProduct().getProductId());
 
         Query g = session.createQuery("from Product where productId=:s1");
         g.setParameter("s1", reviewItem.getProduct().getProductId());
@@ -105,19 +107,20 @@ public class ReviewRepository implements IReviewRepository {
 
         reviewItemViewModel.setProductImage(productImage.getImage());
         reviewItemViewModel.setProductName(product.getName());
-        reviewItemViewModel.setDateUpdated(DateUtils.dateTimeToStringWithFormat(reviewItem.getUpdatedAt(),"yyyy-MM-dd HH:mm:ss"));
+        reviewItemViewModel.setDateUpdated(DateUtils.dateTimeToStringWithFormat(reviewItem.getUpdatedAt(), "yyyy-MM-dd HH:mm:ss"));
 
         Query q1 = session.createQuery("select username from User where id = :s1");
-        q1.setParameter("s1",userId);
+        q1.setParameter("s1", userId);
 
         reviewItemViewModel.setUserName(q1.getSingleResult().toString());
         Query q2 = session.createQuery("select avatar from User where id = :s1");
-        q2.setParameter("s1",userId);
+        q2.setParameter("s1", userId);
 
         reviewItemViewModel.setUserAvatar(q2.getSingleResult().toString());
 
         return reviewItemViewModel;
     }
+
     @Override
     public ReviewItemViewModel retrieveById(Integer entityId) {
         Session session = HibernateUtils.getSession();
@@ -133,14 +136,14 @@ public class ReviewRepository implements IReviewRepository {
     public ArrayList<ReviewItemViewModel> retrieveAll(ReviewItemGetPagingRequest request) {
         ArrayList<ReviewItemViewModel> list = new ArrayList<>();
         Session session = HibernateUtils.getSession();
-        int offset = (request.getPageIndex() - 1)*request.getPageSize();
+        int offset = (request.getPageIndex() - 1) * request.getPageSize();
         String cmd = HibernateUtils.getRetrieveAllQuery("ReviewItem", request);
         Query q = session.createQuery(cmd);
         q.setFirstResult(offset);
         q.setMaxResults(request.getPageSize());
         List<ReviewItem> reviewItems = q.list();
 
-        for(ReviewItem reviewItem:reviewItems){
+        for (ReviewItem reviewItem : reviewItems) {
             ReviewItemViewModel v = getReviewItemViewModel(reviewItem, session);
             list.add(v);
         }
@@ -162,9 +165,9 @@ public class ReviewRepository implements IReviewRepository {
         Session session = HibernateUtils.getSession();
         ArrayList<ReviewItemViewModel> reviewItems = new ArrayList<>();
         Query q = session.createQuery("select reviewItemId from ReviewItem where product.productId =:s1");
-        q.setParameter("s1",productId);
+        q.setParameter("s1", productId);
         List<Integer> l = q.list();
-        if(l!= null)
+        if (l != null)
             l.forEach(reviewItemId -> {
                 reviewItems.add(retrieveById(reviewItemId));
             });
@@ -177,9 +180,9 @@ public class ReviewRepository implements IReviewRepository {
         Session session = HibernateUtils.getSession();
         ArrayList<ReviewItemViewModel> reviewItems = new ArrayList<>();
         Query q = session.createQuery("select ri.reviewItemId from Review r inner join ReviewItem ri on r.reviewId = ri.review.reviewId where r.user.userId =:s1");
-        q.setParameter("s1",userId);
+        q.setParameter("s1", userId);
         List<Integer> l = q.list();
-        if(l!= null)
+        if (l != null)
             l.forEach(reviewItemId -> {
                 reviewItems.add(retrieveById(reviewItemId));
             });
@@ -198,11 +201,11 @@ public class ReviewRepository implements IReviewRepository {
     public int getReviewIdByUserId(int userId) {
         Session session = HibernateUtils.getSession();
         Query q = session.createQuery("select reviewId from Review where user.userId =:s1");
-        q.setParameter("s1",userId);
+        q.setParameter("s1", userId);
         Object o = q.getSingleResult();
         session.close();
-        if(o == null)
+        if (o == null)
             return -1;
-        return (int)o;
+        return (int) o;
     }
 }

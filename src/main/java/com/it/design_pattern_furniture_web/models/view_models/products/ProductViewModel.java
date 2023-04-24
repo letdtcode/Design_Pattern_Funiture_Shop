@@ -1,7 +1,7 @@
 package com.it.design_pattern_furniture_web.models.view_models.products;
 
-import models.view_models.product_images.ProductImageViewModel;
-import models.view_models.review_items.ReviewItemViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.product_images.ProductImageViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemViewModel;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

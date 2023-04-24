@@ -1,24 +1,26 @@
 package com.it.design_pattern_furniture_web.models.services.product;
 
-import models.repositories.product.ProductRepository;
-import models.view_models.product_images.ProductImageCreateRequest;
-import models.view_models.product_images.ProductImageGetPagingRequest;
-import models.view_models.product_images.ProductImageUpdateRequest;
-import models.view_models.product_images.ProductImageViewModel;
-import models.view_models.products.ProductCreateRequest;
-import models.view_models.products.ProductGetPagingRequest;
-import models.view_models.products.ProductUpdateRequest;
-import models.view_models.products.ProductViewModel;
+import com.it.design_pattern_furniture_web.models.repositories.product.ProductRepository;
+import com.it.design_pattern_furniture_web.models.view_models.product_images.ProductImageCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.product_images.ProductImageGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.product_images.ProductImageUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.product_images.ProductImageViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel;
 
 import java.util.ArrayList;
 
 public class ProductService implements IProductService {
     private static ProductService instance = null;
+
     public static ProductService getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new ProductService();
         return instance;
     }
+
     @Override
     public int insertProduct(ProductCreateRequest request) {
         return ProductRepository.getInstance().insert(request);

@@ -1,6 +1,6 @@
 package com.it.design_pattern_furniture_web.utils;
 
-import common.paging.PagingRequest;
+import com.it.design_pattern_furniture_web.common.paging.PagingRequest;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
