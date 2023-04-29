@@ -1,14 +1,15 @@
 package com.it.design_pattern_furniture_web.controllers.admin.product;
 
-import models.services.cart.CartService;
-import models.services.product.ProductService;
-import models.view_models.product_images.ProductImageCreateRequest;
-import models.view_models.products.ProductUpdateRequest;
-import models.view_models.products.ProductViewModel;
-import utils.ServletUtils;
-import utils.StringUtils;
-import utils.constants.IMAGE_PER_PRODUCT;
-import utils.constants.PRODUCT_STATUS;
+
+import com.it.design_pattern_furniture_web.models.services.cart.CartService;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
+import com.it.design_pattern_furniture_web.models.view_models.product_images.ProductImageCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
+import com.it.design_pattern_furniture_web.utils.constants.IMAGE_PER_PRODUCT;
+import com.it.design_pattern_furniture_web.utils.constants.PRODUCT_STATUS;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;

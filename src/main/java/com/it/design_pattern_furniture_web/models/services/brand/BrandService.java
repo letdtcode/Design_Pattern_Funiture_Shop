@@ -2,7 +2,7 @@ package com.it.design_pattern_furniture_web.models.services.brand;
 
 import java.util.ArrayList;
 
-import com.it.design_pattern_furniture_web.models.repositories.brand.BrandRepository;
+import com.it.design_pattern_furniture_web.models.repositories.brand.z;
 import com.it.design_pattern_furniture_web.models.view_models.brands.BrandCreateRequest;
 import com.it.design_pattern_furniture_web.models.view_models.brands.BrandGetPagingRequest;
 import com.it.design_pattern_furniture_web.models.view_models.brands.BrandUpdateRequest;

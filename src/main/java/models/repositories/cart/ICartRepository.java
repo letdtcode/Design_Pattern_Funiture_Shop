@@ -1,4 +1,4 @@
-package com.it.design_pattern_furniture_web.models.repositories.cart;
+package models.repositories.cart;
 
 import com.it.design_pattern_furniture_web.common.interfaces.IModifyEntity;
 import com.it.design_pattern_furniture_web.common.interfaces.IRetrieveEntity;
@@ -7,15 +7,12 @@ import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartIte
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemUpdateRequest;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemViewModel;
 
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public interface ICartRepository extends IModifyEntity<CartItemCreateRequest, CartItemUpdateRequest, Integer>,
         IRetrieveEntity<CartItemViewModel, CartItemGetPagingRequest, Integer> {
     ArrayList<CartItemViewModel> retrieveCartByUserId(int userId);
-
-    //    ArrayList<CartItemViewModel> retrieveCartByUserId(int userId);
     int getCartIdByUserId(int userId);
     CartItemViewModel getCartItemContain(int cartId, int productId);
     boolean deleteCartByUserId(int userId);

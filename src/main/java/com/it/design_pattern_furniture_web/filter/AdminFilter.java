@@ -1,6 +1,7 @@
 package com.it.design_pattern_furniture_web.filter;
 
 
+import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
 import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.*;
@@ -25,14 +26,14 @@ public class AdminFilter implements Filter {
         httpReq.setCharacterEncoding("UTF-8");
         httpResp.setCharacterEncoding("UTF-8");
         HttpSession session = httpReq.getSession(false);
-//        UserViewModel user = null;
-//        if(session != null)
-//            user = (UserViewModel) session.getAttribute("admin");
-//        if(user != null){
-//            chain.doFilter(request, response);
-//        }else{
-//            httpReq.setAttribute("error","error");
-//            ServletUtils.forward(httpReq, httpResp, "/admin/login");
-//        }
+        UserViewModel user = null;
+        if(session != null)
+            user = (UserViewModel) session.getAttribute("admin");
+        if(user != null){
+            chain.doFilter(request, response);
+        }else{
+            httpReq.setAttribute("error","error");
+            ServletUtils.forward(httpReq, httpResp, "/admin/login");
+        }
     }
 }

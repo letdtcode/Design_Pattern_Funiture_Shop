@@ -1,8 +1,9 @@
 package com.it.design_pattern_furniture_web.controllers.admin.product;
 
 import com.google.gson.Gson;
-import models.services.product.ProductService;
-import utils.StringUtils;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

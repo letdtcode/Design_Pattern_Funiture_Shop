@@ -1,18 +1,19 @@
 package com.it.design_pattern_furniture_web.controllers.admin.product;
 
-import models.services.brand.BrandService;
-import models.services.category.CategoryService;
-import models.services.product.ProductService;
-import models.view_models.brands.BrandGetPagingRequest;
-import models.view_models.brands.BrandViewModel;
-import models.view_models.categories.CategoryGetPagingRequest;
-import models.view_models.categories.CategoryViewModel;
-import models.view_models.product_images.ProductImageCreateRequest;
-import models.view_models.products.ProductCreateRequest;
-import utils.ServletUtils;
-import utils.StringUtils;
-import utils.constants.BRAND_STATUS;
-import utils.constants.CATEGORY_STATUS;
+import com.it.design_pattern_furniture_web.models.services.brand.BrandService;
+import com.it.design_pattern_furniture_web.models.services.category.CategoryService;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
+import com.it.design_pattern_furniture_web.models.view_models.brands.BrandGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.brands.BrandViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.categories.CategoryGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.categories.CategoryViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.product_images.ProductImageCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductCreateRequest;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
+import com.it.design_pattern_furniture_web.utils.constants.BRAND_STATUS;
+import com.it.design_pattern_furniture_web.utils.constants.CATEGORY_STATUS;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
