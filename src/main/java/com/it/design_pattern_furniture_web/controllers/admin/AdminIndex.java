@@ -1,5 +1,7 @@
 package com.it.design_pattern_furniture_web.controllers.admin;
 
+import com.it.design_pattern_furniture_web.models.services.user.UserService;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
 import models.services.order.OrderService;
 import models.services.user.UserService;
 import models.view_models.orders.OrderOverviewViewModel;
