@@ -1,12 +1,12 @@
 package com.it.design_pattern_furniture_web.models.services.brand;
 
-import models.repositories.brand.BrandRepository;
-import models.view_models.brands.BrandCreateRequest;
-import models.view_models.brands.BrandGetPagingRequest;
-import models.view_models.brands.BrandUpdateRequest;
-import models.view_models.brands.BrandViewModel;
-
 import java.util.ArrayList;
+
+import com.it.design_pattern_furniture_web.models.repositories.brand.BrandRepository;
+import com.it.design_pattern_furniture_web.models.view_models.brands.BrandCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.brands.BrandGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.brands.BrandUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.brands.BrandViewModel;
 
 public class BrandService implements IBrandService{
     private static BrandService instance = null;
