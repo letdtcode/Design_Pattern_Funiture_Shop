@@ -1,10 +1,8 @@
 package com.it.design_pattern_furniture_web.controllers.admin.discount;
 
-import models.services.discount.DiscountService;
-import models.view_models.discounts.DiscountCreateRequest;
-import utils.DateUtils;
-import utils.ServletUtils;
-import utils.StringUtils;
+
+
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
