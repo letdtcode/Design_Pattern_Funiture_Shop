@@ -1,16 +1,20 @@
-package com.it.design_pattern_furniture_web.models.repositories.cart;
+package models.repositories.cart;
+
 
 import com.it.design_pattern_furniture_web.models.entities.Cart;
 import com.it.design_pattern_furniture_web.models.entities.CartItem;
 import com.it.design_pattern_furniture_web.models.entities.Product;
+import com.it.design_pattern_furniture_web.models.repositories.product.ProductRepository;
+import com.it.design_pattern_furniture_web.models.services.cart.CartService;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemCreateRequest;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemGetPagingRequest;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemUpdateRequest;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel;
 import com.it.design_pattern_furniture_web.utils.DateUtils;
 import com.it.design_pattern_furniture_web.utils.HibernateUtils;
 import com.it.design_pattern_furniture_web.utils.constants.PRODUCT_STATUS;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -70,9 +74,9 @@ public class CartRepository implements ICartRepository {
         if(request.getQuantity() < 0)
             return false;
         CartItem cartItem = session.find(CartItem.class, request.getCartItemId());
-//        ProductViewModel product = ProductRepository.getInstance().retrieveById(cartItem.getProduct().getProductId());
-//        if(request.getQuantity() > product.getQuantity())
-//            return false;
+        ProductViewModel product = ProductRepository.getInstance().retrieveById(cartItem.getProduct().getProductId());
+        if(request.getQuantity() > product.getQuantity())
+            return false;
 
         cartItem.setQuantity(request.getQuantity());
         session.close();
@@ -106,27 +110,27 @@ public class CartRepository implements ICartRepository {
     }
     private CartItemViewModel getCartItemViewModel(CartItem cartItem, Session session){
         CartItemViewModel cartItemViewModel = new CartItemViewModel();
-//        ProductViewModel product = ProductService.getInstance().retrieveProductById(cartItem.getProduct().getProductId());
-//        if(cartItem.getQuantity() > product.getQuantity()){
-//            CartItemUpdateRequest req = new CartItemUpdateRequest();
-//            req.setCartItemId(cartItem.getCartItemId());
-//            req.setQuantity(product.getQuantity());
-//            update(req);
-//        }
-//        cartItemViewModel.setCartItemId(cartItem.getCartItemId());
-//        cartItemViewModel.setDateAdded(cartItem.getDateAdded());
-//        cartItemViewModel.setQuantity(cartItem.getQuantity());
-//        cartItemViewModel.setProductImage(product.getImage());
-//        cartItemViewModel.setProductName(product.getName());
-//        cartItemViewModel.setCartId(cartItem.getCart().getCartId());
-//        cartItemViewModel.setUnitPrice(product.getPrice());
-//        cartItemViewModel.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-//        cartItemViewModel.setProductId(cartItem.getProduct().getProductId());
-//        cartItemViewModel.setStatus(cartItem.getStatus());
-//        cartItemViewModel.setProductStatus(getProductStatus(product.getStatus()));
-//
-//        return cartItemViewModel;
-        return null;
+
+        ProductViewModel product = ProductService.getInstance().retrieveProductById(cartItem.getProduct().getProductId());
+        if(cartItem.getQuantity() > product.getQuantity()){
+            CartItemUpdateRequest req = new CartItemUpdateRequest();
+            req.setCartItemId(cartItem.getCartItemId());
+            req.setQuantity(product.getQuantity());
+            update(req);
+        }
+        cartItemViewModel.setCartItemId(cartItem.getCartItemId());
+        cartItemViewModel.setDateAdded(cartItem.getDateAdded());
+        cartItemViewModel.setQuantity(cartItem.getQuantity());
+        cartItemViewModel.setProductImage(product.getImage());
+        cartItemViewModel.setProductName(product.getName());
+        cartItemViewModel.setCartId(cartItem.getCart().getCartId());
+        cartItemViewModel.setUnitPrice(product.getPrice());
+        cartItemViewModel.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+        cartItemViewModel.setProductId(cartItem.getProduct().getProductId());
+        cartItemViewModel.setStatus(cartItem.getStatus());
+        cartItemViewModel.setProductStatus(getProductStatus(product.getStatus()));
+
+        return cartItemViewModel;
     }
     @Override
     public CartItemViewModel retrieveById(Integer entityId) {
@@ -142,22 +146,21 @@ public class CartRepository implements ICartRepository {
     @Override
     public ArrayList<CartItemViewModel> retrieveAll(CartItemGetPagingRequest request) {
 
-//        ArrayList<CartItemViewModel> list = new ArrayList<>();
-//        Session session = HibernateUtils.getSession();
-//        int offset = (request.getPageIndex() - 1)*request.getPageSize();
-//        String cmd = HibernateUtils.getRetrieveAllQuery("CartItem", request);
-//        Query q = session.createQuery(cmd);
-//        q.setFirstResult(offset);
-//        q.setMaxResults(request.getPageSize());
-//        List<CartItem> cartItems = q.list();
-//
-//        for(CartItem cartItem:cartItems){
-//            CartItemViewModel v = getCartItemViewModel(cartItem, session);
-//            list.add(v);
-//        }
-//        session.close();
-//        return list;
-        return null;
+        ArrayList<CartItemViewModel> list = new ArrayList<>();
+        Session session = HibernateUtils.getSession();
+        int offset = (request.getPageIndex() - 1)*request.getPageSize();
+        String cmd = HibernateUtils.getRetrieveAllQuery("CartItem", request);
+        Query q = session.createQuery(cmd);
+        q.setFirstResult(offset);
+        q.setMaxResults(request.getPageSize());
+        List<CartItem> cartItems = q.list();
+
+        for(CartItem cartItem:cartItems){
+            CartItemViewModel v = getCartItemViewModel(cartItem, session);
+            list.add(v);
+        }
+        session.close();
+        return list;
     }
 
     @Override
@@ -224,15 +227,15 @@ public class CartRepository implements ICartRepository {
 
     @Override
     public int canUpdateQuantity(int cartItemId, int quantity) {
-//        CartItemViewModel cartItem = CartService.getInstance().retrieveCartItemById(cartItemId);
-//        ProductViewModel product = ProductService.getInstance().retrieveProductById(cartItem.getProductId());
-//        if(product.getQuantity() < quantity) {
-//            CartItemUpdateRequest req = new CartItemUpdateRequest();
-//            req.setQuantity(product.getQuantity());
-//            req.setCartItemId(cartItemId);
-//            update(req);
-//            return product.getQuantity();
-//        }
+        CartItemViewModel cartItem = CartService.getInstance().retrieveCartItemById(cartItemId);
+        ProductViewModel product = ProductService.getInstance().retrieveProductById(cartItem.getProductId());
+        if(product.getQuantity() < quantity) {
+            CartItemUpdateRequest req = new CartItemUpdateRequest();
+            req.setQuantity(product.getQuantity());
+            req.setCartItemId(cartItemId);
+            update(req);
+            return product.getQuantity();
+        }
         return -1;
     }
 
@@ -255,43 +258,42 @@ public class CartRepository implements ICartRepository {
 
     @Override
     public String addProductToCart(int productId, int quantity, int userId) {
-//        int cartId = CartService.getInstance().getCartIdByUserId(userId);
-//        String responseStatus;
-//        int count = -1;
-//        CartItemViewModel cartItem = CartService.getInstance().getCartItemContain(cartId, productId);
-//        ProductViewModel product = ProductService.getInstance().retrieveProductById(productId);
-//        if(product.getQuantity() > 0) {
-//            if (cartItem != null) {
-//                CartItemUpdateRequest updateReq = new CartItemUpdateRequest();
-//                updateReq.setCartItemId(cartItem.getCartItemId());
-//                updateReq.setQuantity(cartItem.getQuantity() + 1);
-//                updateReq.setStatus(cartItem.getStatus());
-//                count = CartService.getInstance().updateCartItem(updateReq) ? 1 : 0;
-//                if(count > 0)
-//                    responseStatus = "repeat";
-//                else
-//                    responseStatus = "error";
-//            } else {
-//                CartItemCreateRequest createReq = new CartItemCreateRequest();
-//                createReq.setCartId(cartId);
-//                createReq.setProductId(productId);
-//                createReq.setQuantity(quantity);
-//                createReq.setStatus(1);
-//
-//                count = CartService.getInstance().insertCartItem(createReq);
-//                if (count > 0) {
-//                    responseStatus = "success";
-//                }
-//                else{
-//                    responseStatus = "error";
-//                }
-//            }
-//        }else{
-//            responseStatus = "expired";
-//        }
-//
-//        return responseStatus;
-        return null;
+        int cartId = CartService.getInstance().getCartIdByUserId(userId);
+        String responseStatus;
+        int count = -1;
+        CartItemViewModel cartItem = CartService.getInstance().getCartItemContain(cartId, productId);
+        ProductViewModel product = ProductService.getInstance().retrieveProductById(productId);
+        if(product.getQuantity() > 0) {
+            if (cartItem != null) {
+                CartItemUpdateRequest updateReq = new CartItemUpdateRequest();
+                updateReq.setCartItemId(cartItem.getCartItemId());
+                updateReq.setQuantity(cartItem.getQuantity() + 1);
+                updateReq.setStatus(cartItem.getStatus());
+                count = CartService.getInstance().updateCartItem(updateReq) ? 1 : 0;
+                if(count > 0)
+                    responseStatus = "repeat";
+                else
+                    responseStatus = "error";
+            } else {
+                CartItemCreateRequest createReq = new CartItemCreateRequest();
+                createReq.setCartId(cartId);
+                createReq.setProductId(productId);
+                createReq.setQuantity(quantity);
+                createReq.setStatus(1);
+
+                count = CartService.getInstance().insertCartItem(createReq);
+                if (count > 0) {
+                    responseStatus = "success";
+                }
+                else{
+                    responseStatus = "error";
+                }
+            }
+        }else{
+            responseStatus = "expired";
+        }
+
+        return responseStatus;
     }
 
     @Override
