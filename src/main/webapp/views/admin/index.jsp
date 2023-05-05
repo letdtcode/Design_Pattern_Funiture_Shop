@@ -1,9 +1,9 @@
 <%@ page import="com.google.gson.Gson" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="customers" type="java.util.ArrayList<models.view_models.users.UserViewModel>" scope="request"/>
-<jsp:useBean id="orders" type="java.util.ArrayList<models.view_models.orders.OrderViewModel>" scope="request"/>
-<jsp:useBean id="statistics" type="models.view_models.orders.OrderOverviewViewModel" scope="request"/>
+<jsp:useBean id="customers" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel>" scope="request"/>
+<jsp:useBean id="orders" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.orders.OrderViewModel>" scope="request"/>
+<jsp:useBean id="statistics" type="com.it.design_pattern_furniture_web.models.view_models.orders.OrderOverviewViewModel" scope="request"/>
 <html>
 <head>
     <meta charset="utf-8" />
