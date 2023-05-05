@@ -1,11 +1,11 @@
 package com.it.design_pattern_furniture_web.controllers.admin.discount;
 
-import models.services.discount.DiscountService;
-import models.view_models.discounts.DiscountUpdateRequest;
-import models.view_models.discounts.DiscountViewModel;
-import utils.DateUtils;
-import utils.ServletUtils;
-import utils.StringUtils;
+import com.it.design_pattern_furniture_web.models.services.discount.DiscountService;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountViewModel;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +24,7 @@ public class EditDiscount extends HttpServlet {
 
         request.setAttribute("discount", discount);
 
-        ServletUtils.forward(request,response,"/admin/discounts");
+        ServletUtils.forward(request, response, "/admin/discounts");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class EditDiscount extends HttpServlet {
 
         boolean isSuccess = DiscountService.getInstance().updateDiscount(updateReq);
         String error = "";
-        if(!isSuccess){
+        if (!isSuccess) {
             error = "?error=true";
         }
         ServletUtils.redirect(response, request.getContextPath() + "/admin/discounts" + error);

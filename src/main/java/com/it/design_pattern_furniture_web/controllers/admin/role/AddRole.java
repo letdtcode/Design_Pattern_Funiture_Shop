@@ -1,8 +1,8 @@
 package com.it.design_pattern_furniture_web.controllers.admin.role;
 
-import models.services.role.RoleService;
-import models.view_models.roles.RoleCreateRequest;
-import utils.ServletUtils;
+import com.it.design_pattern_furniture_web.models.services.role.RoleService;
+import com.it.design_pattern_furniture_web.models.view_models.roles.RoleCreateRequest;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +28,7 @@ public class AddRole extends HttpServlet {
 
         int roleId = RoleService.getInstance().insertRole(createReq);
         String error = "";
-        if(roleId < 1){
+        if (roleId < 1) {
             error = "?error=true";
         }
         ServletUtils.redirect(response, request.getContextPath() + "/admin/roles" + error);

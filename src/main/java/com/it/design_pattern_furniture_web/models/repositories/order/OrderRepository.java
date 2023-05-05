@@ -1,30 +1,30 @@
 package com.it.design_pattern_furniture_web.models.repositories.order;
 
-import models.entities.*;
-import models.repositories.cart.CartRepository;
-import models.repositories.discount.DiscountRepository;
-import models.repositories.product.ProductRepository;
-import models.services.cart.CartService;
-import models.services.discount.DiscountService;
-import models.services.mail.MailJetService;
-import models.services.order.OrderService;
-import models.services.product.ProductService;
-import models.view_models.cart_items.CartItemUpdateRequest;
-import models.view_models.cart_items.CartItemViewModel;
-import models.view_models.discounts.DiscountViewModel;
-import models.view_models.order_items.OrderItemCreateRequest;
-import models.view_models.order_items.OrderItemViewModel;
-import models.view_models.orders.*;
-import models.view_models.products.ProductViewModel;
-import models.view_models.users.UserViewModel;
+import com.it.design_pattern_furniture_web.models.entities.*;
+import com.it.design_pattern_furniture_web.models.repositories.cart.CartRepository;
+import com.it.design_pattern_furniture_web.models.repositories.discount.DiscountRepository;
+import com.it.design_pattern_furniture_web.models.repositories.product.ProductRepository;
+import com.it.design_pattern_furniture_web.models.services.cart.CartService;
+import com.it.design_pattern_furniture_web.models.services.discount.DiscountService;
+import com.it.design_pattern_furniture_web.models.services.mail.MailJetService;
+import com.it.design_pattern_furniture_web.models.services.order.OrderService;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
+import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.order_items.OrderItemCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.order_items.OrderItemViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.orders.*;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.HibernateUtils;
+import com.it.design_pattern_furniture_web.utils.HtmlClassUtils;
+import com.it.design_pattern_furniture_web.utils.constants.ORDER_PAYMENT;
+import com.it.design_pattern_furniture_web.utils.constants.ORDER_STATUS;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import utils.DateUtils;
-import utils.HibernateUtils;
-import utils.HtmlClassUtils;
-import utils.constants.ORDER_PAYMENT;
-import utils.constants.ORDER_STATUS;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,13 +32,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderRepository implements IOrderRepository{
+public class OrderRepository implements IOrderRepository {
     private static OrderRepository instance = null;
-    public static OrderRepository getInstance(){
-        if(instance == null)
+
+    public static OrderRepository getInstance() {
+        if (instance == null)
             instance = new OrderRepository();
         return instance;
     }
+
     @Override
     public int insert(OrderCreateRequest request) {
         Session session = HibernateUtils.getSession();
@@ -52,13 +54,13 @@ public class OrderRepository implements IOrderRepository{
         order.setEmail(request.getEmail());
         order.setPhone(request.getPhone());
         order.setName(request.getName());
-        if(request.getDiscountId() > 0) {
+        if (request.getDiscountId() > 0) {
             Discount discount = session.find(Discount.class, request.getDiscountId());
             order.setDiscount(discount);
         }
         User user = session.find(User.class, request.getUserId());
         order.setUser(user);
-        if(request.getPayment() == ORDER_PAYMENT.PAYPAL)
+        if (request.getPayment() == ORDER_PAYMENT.PAYPAL)
             order.setDateDone(DateUtils.dateTimeNow());
         order.setShipping(request.getShipping());
         order.setTotalItemPrice(request.getTotalItemPrice());
@@ -71,12 +73,11 @@ public class OrderRepository implements IOrderRepository{
             session.persist(order);
             orderId = order.getOrderId();
             tx.commit();
-        }catch(Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             session.close();
         }
 
@@ -88,10 +89,10 @@ public class OrderRepository implements IOrderRepository{
         Session session = HibernateUtils.getSession();
         Transaction tx = null;
         Order order = session.find(Order.class, request.getOrderId());
-        if(order.getStatus() == ORDER_STATUS.DELIVERED && request.getStatus() != ORDER_STATUS.RETURN)
+        if (order.getStatus() == ORDER_STATUS.DELIVERED && request.getStatus() != ORDER_STATUS.RETURN)
             return false;
         order.setStatus(request.getStatus());
-        if(request.getStatus() == ORDER_STATUS.DELIVERED && order.getPayment() == ORDER_PAYMENT.COD){
+        if (request.getStatus() == ORDER_STATUS.DELIVERED && order.getPayment() == ORDER_PAYMENT.COD) {
             order.setPayment(ORDER_PAYMENT.PAYPAL);
             order.setDateDone(DateUtils.dateTimeNow());
         }
@@ -107,9 +108,9 @@ public class OrderRepository implements IOrderRepository{
         return HibernateUtils.remove(order);
     }
 
-    private String getStatus(int i){
+    private String getStatus(int i) {
         String status = "";
-        switch (i){
+        switch (i) {
             case ORDER_STATUS.PENDING:
                 status = "Đang đợi";
                 break;
@@ -134,9 +135,10 @@ public class OrderRepository implements IOrderRepository{
         }
         return status;
     }
-    private String getPayment(int i){
+
+    private String getPayment(int i) {
         String payment = "";
-        switch (i){
+        switch (i) {
             case ORDER_PAYMENT.PAYPAL:
                 payment = "PAYPAL";
                 break;
@@ -149,14 +151,15 @@ public class OrderRepository implements IOrderRepository{
         }
         return payment;
     }
-    private OrderViewModel getOrderViewModel(Order order, Session session){
+
+    private OrderViewModel getOrderViewModel(Order order, Session session) {
         OrderViewModel orderViewModel = new OrderViewModel();
         DiscountViewModel discount = null;
-        if(order.getDiscount() != null)
+        if (order.getDiscount() != null)
             discount = DiscountService.getInstance().retrieveDiscountById(order.getDiscount().getDiscountId());
         Query q = session.createQuery("from User where id =:s1");
-        q.setParameter("s1",order.getUser().getUserId());
-        User user = (User)q.getSingleResult();
+        q.setParameter("s1", order.getUser().getUserId());
+        User user = (User) q.getSingleResult();
 
         orderViewModel.setUserName(user.getUsername());
         orderViewModel.setUserAddress(user.getAddress());
@@ -164,30 +167,31 @@ public class OrderRepository implements IOrderRepository{
 
         orderViewModel.setOrderId(order.getOrderId());
         orderViewModel.setAddress(order.getAddress());
-        if(order.getDateCreated() != null)
-            orderViewModel.setDateCreated(DateUtils.dateTimeToStringWithFormat(order.getDateCreated(),"yyyy-MM-dd HH:mm:ss"));
+        if (order.getDateCreated() != null)
+            orderViewModel.setDateCreated(DateUtils.dateTimeToStringWithFormat(order.getDateCreated(), "yyyy-MM-dd HH:mm:ss"));
         orderViewModel.setStatus(order.getStatus());
         orderViewModel.setStatusCode(getStatus(order.getStatus()));
         orderViewModel.setEmail(order.getEmail());
         orderViewModel.setPhone(order.getPhone());
         orderViewModel.setName(order.getName());
-        if(order.getDiscount() != null) {
+        if (order.getDiscount() != null) {
             orderViewModel.setDiscountId(order.getDiscount().getDiscountId());
             orderViewModel.setDiscountCode(discount.getDiscountCode());
             orderViewModel.setDiscountValue(discount.getDiscountValue());
         }
         orderViewModel.setUserId(order.getUser().getUserId());
-        if(order.getDateDone() != null)
-            orderViewModel.setDateDone(DateUtils.dateTimeToStringWithFormat(order.getDateDone(),"yyyy-MM-dd HH:mm:ss"));
+        if (order.getDateDone() != null)
+            orderViewModel.setDateDone(DateUtils.dateTimeToStringWithFormat(order.getDateDone(), "yyyy-MM-dd HH:mm:ss"));
         orderViewModel.setShipping(order.getShipping());
         orderViewModel.setTotalItemPrice(order.getTotalItemPrice());
         orderViewModel.setTotalPrice(order.getTotalPrice());
         orderViewModel.setPayment(order.getPayment());
         orderViewModel.setPaymentMethod(getPayment(order.getPayment()));
-        orderViewModel.setTotalItem(HibernateUtils.count("OrderItem","orderId = " + order.getOrderId()));
+        orderViewModel.setTotalItem(HibernateUtils.count("OrderItem", "orderId = " + order.getOrderId()));
         orderViewModel.setStatusClass(HtmlClassUtils.generateOrderStatusClass(order.getStatus()));
         return orderViewModel;
     }
+
     @Override
     public OrderViewModel retrieveById(Integer entityId) {
         Session session = HibernateUtils.getSession();
@@ -203,14 +207,14 @@ public class OrderRepository implements IOrderRepository{
     public ArrayList<OrderViewModel> retrieveAll(OrderGetPagingRequest request) {
         ArrayList<OrderViewModel> list = new ArrayList<>();
         Session session = HibernateUtils.getSession();
-        int offset = (request.getPageIndex() - 1)*request.getPageSize();
+        int offset = (request.getPageIndex() - 1) * request.getPageSize();
         String cmd = HibernateUtils.getRetrieveAllQuery("Order", request);
         Query q = session.createQuery(cmd);
         q.setFirstResult(offset);
         q.setMaxResults(request.getPageSize());
         List<Order> orders = q.list();
 
-        for(Order order:orders){
+        for (Order order : orders) {
             OrderViewModel v = getOrderViewModel(order, session);
             list.add(v);
         }
@@ -240,11 +244,11 @@ public class OrderRepository implements IOrderRepository{
     public ArrayList<OrderViewModel> retrieveOrderByUserId(int userId) {
         Session session = HibernateUtils.getSession();
         Query q1 = session.createQuery("from Order where user.userId=:s1");
-        q1.setParameter("s1",userId);
+        q1.setParameter("s1", userId);
         ArrayList<OrderViewModel> list = new ArrayList<>();
         List<Order> orders = q1.list();
 
-        for(Order order:orders){
+        for (Order order : orders) {
             OrderViewModel v = getOrderViewModel(order, session);
             list.add(v);
         }
@@ -256,7 +260,7 @@ public class OrderRepository implements IOrderRepository{
         ArrayList<OrderViewModel> orders = OrderService.getInstance().retrieveAllOrder(new OrderGetPagingRequest());
 
         BigDecimal totalRevenue = BigDecimal.valueOf(0);
-        for(OrderViewModel o: orders){
+        for (OrderViewModel o : orders) {
             totalRevenue = totalRevenue.add(o.getTotalPrice());
         }
 
@@ -276,22 +280,22 @@ public class OrderRepository implements IOrderRepository{
         Query q = session.createQuery("select count(*) from Order where status=:s1");
 
         q.setParameter("s1", ORDER_STATUS.PENDING);
-        res.setTotalPending((long)q.getSingleResult());
+        res.setTotalPending((long) q.getSingleResult());
 
         q.setParameter("s1", ORDER_STATUS.READY_TO_SHIP);
-        res.setTotalReady((long)q.getSingleResult());
+        res.setTotalReady((long) q.getSingleResult());
 
         q.setParameter("s1", ORDER_STATUS.ON_THE_WAY);
-        res.setTotalDelivering((long)q.getSingleResult());
+        res.setTotalDelivering((long) q.getSingleResult());
 
         q.setParameter("s1", ORDER_STATUS.DELIVERED);
-        res.setTotalCompleted((long)q.getSingleResult());
+        res.setTotalCompleted((long) q.getSingleResult());
 
         q.setParameter("s1", ORDER_STATUS.CANCEL);
-        res.setTotalCanceled((long)q.getSingleResult());
+        res.setTotalCanceled((long) q.getSingleResult());
 
         q.setParameter("s1", ORDER_STATUS.RETURN);
-        res.setTotalReturned((long)q.getSingleResult());
+        res.setTotalReturned((long) q.getSingleResult());
 
         return res;
 
@@ -311,13 +315,13 @@ public class OrderRepository implements IOrderRepository{
     public boolean createOrder(HttpServletRequest request, OrderCreateRequest orderReq, int userId) {
 
         ArrayList<CartItemViewModel> cartItems = CartRepository.getInstance().retrieveCartByUserId(userId);
-        if(cartItems.size() == 0)
+        if (cartItems.size() == 0)
             return false;
         int orderId = OrderRepository.getInstance().insert(orderReq);
-        if(orderId < 1)
+        if (orderId < 1)
             return false;
-        for(CartItemViewModel c: cartItems){
-            if(c.getQuantity() == 0)
+        for (CartItemViewModel c : cartItems) {
+            if (c.getQuantity() == 0)
                 continue;
             OrderItemCreateRequest createOrderItemReq = new OrderItemCreateRequest();
             createOrderItemReq.setOrderId(orderId);
@@ -325,18 +329,17 @@ public class OrderRepository implements IOrderRepository{
             createOrderItemReq.setUnitPrice(c.getUnitPrice());
             createOrderItemReq.setProductId(c.getProductId());
             int orderItemId = insertOrderItem(createOrderItemReq);
-            if(orderItemId == -1) {
+            if (orderItemId == -1) {
                 return false;
             }
             // Số lượng product trong kho không đủ
-            else if(orderItemId == 0){
+            else if (orderItemId == 0) {
                 // update lại số lượng trong giỏ hàng = với số lượng trong kho nếu vượt quá
-                for(CartItemViewModel ci: cartItems) {
+                for (CartItemViewModel ci : cartItems) {
                     int currQuantity = ProductRepository.getInstance().getQuantity(ci.getProductId());
                     if (currQuantity == 0) {
                         CartRepository.getInstance().delete(ci.getCartItemId());
-                    }
-                    else if(currQuantity < ci.getQuantity()) {
+                    } else if (currQuantity < ci.getQuantity()) {
                         CartItemUpdateRequest r = new CartItemUpdateRequest();
                         r.setCartItemId(ci.getCartItemId());
                         r.setQuantity(currQuantity);
@@ -348,7 +351,7 @@ public class OrderRepository implements IOrderRepository{
             }
         }
         boolean success = CartService.getInstance().deleteCartByUserId(userId);
-        if(!success){
+        if (!success) {
             clearOrder(orderId);
             return false;
         }
@@ -356,7 +359,7 @@ public class OrderRepository implements IOrderRepository{
         UserViewModel user = (UserViewModel) session.getAttribute("user");
         user.setTotalCartItem(user.getTotalCartItem() - cartItems.size());
         session.setAttribute("user", user);
-        if(orderReq.getDiscountId() != 0)
+        if (orderReq.getDiscountId() != 0)
             DiscountRepository.getInstance().updateQuantity(orderReq.getDiscountId());
         MailJetService.getInstance().sendMail(user.getFirstName() + " " + user.getLastName(), user.getEmail(),
                 "<h2>Chào " + user.getFirstName() + " " + user.getLastName() + " </h2>, <h3>FurSshop cảm ơn vì đã tin tưởng mua sản phẩm, đơn hàng sẽ nhanh chóng đến tay của bạn.<br />Bạn có thể xem chi tiết đơn hàng trong mục Đơn hàng của tôi. </h3><h4>Xin chân thành cảm ơn bạn !!! Rất vui được phục vụ.</h4>",
@@ -368,17 +371,18 @@ public class OrderRepository implements IOrderRepository{
     public boolean clearOrder(int orderId) {
         Session s = HibernateUtils.getSession();
         Query q = s.createQuery("select orderItemId from OrderItem where order.orderId=:s1");
-        q.setParameter("s1",orderId);
+        q.setParameter("s1", orderId);
         List<Integer> oIds = q.list();
         s.close();
-        for(int id:oIds) {
+        for (int id : oIds) {
             boolean res = deleteOrderItem(id);
-            if(!res)
+            if (!res)
                 return false;
         }
         return delete(orderId);
     }
-    private OrderItemViewModel getOrderItemViewModel(OrderItem orderItem){
+
+    private OrderItemViewModel getOrderItemViewModel(OrderItem orderItem) {
         OrderItemViewModel orderItemViewModel = new OrderItemViewModel();
         ProductViewModel product = ProductService.getInstance().retrieveProductById(orderItem.getProduct().getProductId());
 
@@ -393,6 +397,7 @@ public class OrderRepository implements IOrderRepository{
 
         return orderItemViewModel;
     }
+
     @Override
     public ArrayList<OrderItemViewModel> getItemByOrderId(int orderId) {
         Session session = HibernateUtils.getSession();
@@ -428,15 +433,14 @@ public class OrderRepository implements IOrderRepository{
             session.persist(orderItem);
             orderItemId = orderItem.getOrderItemId();
             tx.commit();
-        }catch(Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             session.close();
         }
-        if(orderItemId != -1) {
+        if (orderItemId != -1) {
             boolean res = ProductService.getInstance().updateQuantity(orderItem.getProduct().getProductId(), orderItem.getQuantity());
             if (!res) {
                 OrderService.getInstance().clearOrder(orderItem.getOrder().getOrderId());

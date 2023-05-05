@@ -1,9 +1,9 @@
-<%@ page import="utils.HtmlClassUtils" %>
-<%@ page import="utils.constants.ORDER_STATUS" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.HtmlClassUtils" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.ORDER_STATUS" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<jsp:useBean id="order" scope="request" class="models.view_models.orders.OrderViewModel"/>
-<jsp:useBean id="orderItems" scope="request" type="java.util.ArrayList<models.view_models.order_items.OrderItemViewModel>"/>
+<jsp:useBean id="order" scope="request" class="com.it.design_pattern_furniture_web.models.view_models.orders.OrderViewModel"/>
+<jsp:useBean id="orderItems" scope="request" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.order_items.OrderItemViewModel>"/>
 <html>
 <head>
     <meta charset="utf-8" />

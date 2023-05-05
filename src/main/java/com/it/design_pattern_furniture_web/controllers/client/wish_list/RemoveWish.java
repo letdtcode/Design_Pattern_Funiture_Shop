@@ -1,11 +1,15 @@
 package com.it.design_pattern_furniture_web.controllers.client.wish_list;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-
+import com.it.design_pattern_furniture_web.models.services.wish.WishService;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
 import com.it.design_pattern_furniture_web.utils.StringUtils;
 
-import javax.servlet.annotation.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -17,12 +21,12 @@ public class RemoveWish extends HttpServlet {
         int wishItemId = StringUtils.toInt(request.getParameter("wishItemId"));
         boolean success = WishService.getInstance().deleteWishItem(wishItemId);
         PrintWriter out = response.getWriter();
-        if(!success){
+        if (!success) {
             out.println("error");
-        }else{
+        } else {
             HttpSession session = request.getSession();
             UserViewModel user = (UserViewModel) session.getAttribute("user");
-            if(user == null)
+            if (user == null)
                 return;
             user.setTotalWishListItem(user.getTotalWishListItem() - 1);
             session.setAttribute("user", user);

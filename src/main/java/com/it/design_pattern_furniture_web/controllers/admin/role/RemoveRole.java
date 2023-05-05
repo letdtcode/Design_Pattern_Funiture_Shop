@@ -1,8 +1,8 @@
 package com.it.design_pattern_furniture_web.controllers.admin.role;
 
-import models.services.role.RoleService;
-import utils.ServletUtils;
-import utils.StringUtils;
+import com.it.design_pattern_furniture_web.models.services.role.RoleService;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +19,7 @@ public class RemoveRole extends HttpServlet {
 
         boolean isSuccess = RoleService.getInstance().deleteRole(roleId);
         String error = "";
-        if(!isSuccess){
+        if (!isSuccess) {
             error = "?error=true";
         }
         ServletUtils.redirect(response, request.getContextPath() + "/admin/roles" + error);

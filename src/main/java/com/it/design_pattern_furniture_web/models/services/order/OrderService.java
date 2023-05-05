@@ -1,9 +1,9 @@
 package com.it.design_pattern_furniture_web.models.services.order;
 
-import models.repositories.order.OrderRepository;
-import models.view_models.order_items.OrderItemCreateRequest;
-import models.view_models.order_items.OrderItemViewModel;
-import models.view_models.orders.*;
+import com.it.design_pattern_furniture_web.models.repositories.order.OrderRepository;
+import com.it.design_pattern_furniture_web.models.view_models.order_items.OrderItemCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.order_items.OrderItemViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.orders.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;

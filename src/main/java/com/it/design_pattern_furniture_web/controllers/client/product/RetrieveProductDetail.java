@@ -1,9 +1,9 @@
 package com.it.design_pattern_furniture_web.controllers.client.product;
 
-import models.services.product.ProductService;
-import models.view_models.products.ProductViewModel;
-import utils.ServletUtils;
-import utils.StringUtils;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

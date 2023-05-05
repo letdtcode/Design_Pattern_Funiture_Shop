@@ -4,7 +4,6 @@ import com.it.design_pattern_furniture_web.models.services.cart.CartService;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemViewModel;
 import com.it.design_pattern_furniture_web.utils.ServletUtils;
 import com.it.design_pattern_furniture_web.utils.SessionUtils;
-import utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

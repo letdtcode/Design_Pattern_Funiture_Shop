@@ -1,8 +1,11 @@
 package com.it.design_pattern_furniture_web.controllers.admin.discount;
 
 
-
+import com.it.design_pattern_furniture_web.models.services.discount.DiscountService;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountCreateRequest;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
 import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,7 +36,7 @@ public class AddDiscount extends HttpServlet {
 
         int discountId = DiscountService.getInstance().insertDiscount(createReq);
         String error = "";
-        if(discountId < 1){
+        if (discountId < 1) {
             error = "?error=true";
         }
         ServletUtils.redirect(response, request.getContextPath() + "/admin/discounts" + error);

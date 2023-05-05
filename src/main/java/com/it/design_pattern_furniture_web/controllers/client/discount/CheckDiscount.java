@@ -1,10 +1,10 @@
 package com.it.design_pattern_furniture_web.controllers.client.discount;
 
 import com.google.gson.Gson;
-import models.services.discount.DiscountService;
-import models.view_models.discounts.DiscountViewModel;
-import utils.DateUtils;
-import utils.constants.DISCOUNT_STATUS;
+import com.it.design_pattern_furniture_web.models.services.discount.DiscountService;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountViewModel;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.constants.DISCOUNT_STATUS;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,19 +21,16 @@ public class CheckDiscount extends HttpServlet {
         PrintWriter out = response.getWriter();
         String discountCode = request.getParameter("discountCode");
         DiscountViewModel discount = DiscountService.getInstance().getByDiscountCode(discountCode);
-        if(discount == null)
+        if (discount == null)
             out.println("error");
-        else if(discount.getStatus() == DISCOUNT_STATUS.SUSPENDED){
+        else if (discount.getStatus() == DISCOUNT_STATUS.SUSPENDED) {
             out.println("suspended");
-        }
-        else if (DateUtils.stringToLocalDateTime(discount.getStartDate().replace(" ", "T")).isAfter(DateUtils.dateTimeNow()) ||
-                DateUtils.stringToLocalDateTime(discount.getEndDate().replace(" ", "T")).isBefore(DateUtils.dateTimeNow())){
+        } else if (DateUtils.stringToLocalDateTime(discount.getStartDate().replace(" ", "T")).isAfter(DateUtils.dateTimeNow()) ||
+                DateUtils.stringToLocalDateTime(discount.getEndDate().replace(" ", "T")).isBefore(DateUtils.dateTimeNow())) {
             out.println("expired");
-        }
-        else if(discount.getQuantity() == 0){
+        } else if (discount.getQuantity() == 0) {
             out.println("out");
-        }
-        else {
+        } else {
             out.println(new Gson().toJson(discount));
         }
     }

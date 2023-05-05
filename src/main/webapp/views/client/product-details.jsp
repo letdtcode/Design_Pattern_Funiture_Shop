@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<jsp:useBean id="product" type="models.view_models.products.ProductViewModel" scope="request"/>
+<jsp:useBean id="product" type="com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel" scope="request"/>
 <html>
 <head>
     <meta charset="utf-8">

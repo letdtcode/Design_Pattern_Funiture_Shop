@@ -1,9 +1,9 @@
 package com.it.design_pattern_furniture_web.controllers.admin.discount;
 
-import models.services.discount.DiscountService;
-import models.view_models.discounts.DiscountGetPagingRequest;
-import models.view_models.discounts.DiscountViewModel;
-import utils.ServletUtils;
+import com.it.design_pattern_furniture_web.models.services.discount.DiscountService;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountViewModel;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,12 +20,12 @@ public class GetDiscounts extends HttpServlet {
         DiscountGetPagingRequest req = new DiscountGetPagingRequest();
         ArrayList<DiscountViewModel> discounts = DiscountService.getInstance().retrieveAllDiscount(req);
 
-        request.setAttribute("discounts",discounts);
+        request.setAttribute("discounts", discounts);
         String error = request.getParameter("error");
-        if(error != null && !error.equals("")){
-            request.setAttribute("error",error);
+        if (error != null && !error.equals("")) {
+            request.setAttribute("error", error);
         }
-        ServletUtils.forward(request,response,"/views/admin/discount/discount.jsp");
+        ServletUtils.forward(request, response, "/views/admin/discount/discount.jsp");
     }
 
     @Override

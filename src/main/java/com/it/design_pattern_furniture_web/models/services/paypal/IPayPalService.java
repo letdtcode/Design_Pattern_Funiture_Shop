@@ -1,6 +1,7 @@
 package com.it.design_pattern_furniture_web.models.services.paypal;
 
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.orders.OrderCreateRequest;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.RedirectUrls;

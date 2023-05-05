@@ -1,21 +1,23 @@
 package com.it.design_pattern_furniture_web.models.services.discount;
 
-import models.repositories.discount.DiscountRepository;
-import models.view_models.discounts.DiscountCreateRequest;
-import models.view_models.discounts.DiscountGetPagingRequest;
-import models.view_models.discounts.DiscountUpdateRequest;
-import models.view_models.discounts.DiscountViewModel;
+import com.it.design_pattern_furniture_web.models.repositories.discount.DiscountRepository;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountViewModel;
 
 import java.util.ArrayList;
 
-public class DiscountService implements IDiscountService{
+public class DiscountService implements IDiscountService {
 
     private static DiscountService instance = null;
-    public static DiscountService getInstance(){
-        if(instance == null)
+
+    public static DiscountService getInstance() {
+        if (instance == null)
             instance = new DiscountService();
         return instance;
     }
+
     @Override
     public int insertDiscount(DiscountCreateRequest request) {
         return DiscountRepository.getInstance().insert(request);

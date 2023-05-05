@@ -1,11 +1,11 @@
-<%@ page import="utils.HtmlClassUtils" %>
-<%@ page import="utils.constants.USER_GENDER" %>
-<%@ page import="utils.constants.USER_STATUS" %>
-<%@ page import="utils.FileUtil" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.HtmlClassUtils" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.USER_GENDER" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.USER_STATUS" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.FileUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<jsp:useBean id="users" scope="request" type="java.util.ArrayList<models.view_models.users.UserViewModel>"/>
-<jsp:useBean id="roles" scope="request" type="java.util.ArrayList<models.view_models.roles.RoleViewModel>"/>
+<jsp:useBean id="users" scope="request" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel>"/>
+<jsp:useBean id="roles" scope="request" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.roles.RoleViewModel>"/>
 <html>
 <head>
   <meta charset="utf-8" />

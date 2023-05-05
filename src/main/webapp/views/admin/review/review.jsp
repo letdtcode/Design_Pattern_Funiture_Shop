@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<jsp:useBean id="reviews" scope="request" type="java.util.ArrayList<models.view_models.review_items.ReviewItemViewModel>"/>
+<jsp:useBean id="reviews" scope="request" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemViewModel>"/>
 <html>
 <head>
     <meta charset="utf-8" />

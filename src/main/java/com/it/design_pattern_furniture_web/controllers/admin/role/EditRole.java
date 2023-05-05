@@ -1,10 +1,10 @@
 package com.it.design_pattern_furniture_web.controllers.admin.role;
 
-import models.services.role.RoleService;
-import models.view_models.roles.RoleUpdateRequest;
-import models.view_models.roles.RoleViewModel;
-import utils.ServletUtils;
-import utils.StringUtils;
+import com.it.design_pattern_furniture_web.models.services.role.RoleService;
+import com.it.design_pattern_furniture_web.models.view_models.roles.RoleUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.roles.RoleViewModel;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ public class EditRole extends HttpServlet {
 
         request.setAttribute("role", role);
 
-        ServletUtils.forward(request,response,"/admin/roles");
+        ServletUtils.forward(request, response, "/admin/roles");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class EditRole extends HttpServlet {
 
         boolean isSuccess = RoleService.getInstance().updateRole(updateReq);
         String error = "";
-        if(!isSuccess){
+        if (!isSuccess) {
             error = "?error=true";
         }
         ServletUtils.redirect(response, request.getContextPath() + "/admin/roles" + error);

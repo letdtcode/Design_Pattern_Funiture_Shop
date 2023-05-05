@@ -1,8 +1,8 @@
-<%@ page import="utils.constants.PRODUCT_STATUS" %>
-<%@ page import="utils.HtmlClassUtils" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.PRODUCT_STATUS" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.HtmlClassUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<jsp:useBean id="products" scope="request" type="java.util.ArrayList<models.view_models.products.ProductViewModel>"/>
+<jsp:useBean id="products" scope="request" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel>"/>
 <html>
   <head>
     <meta charset="utf-8" />

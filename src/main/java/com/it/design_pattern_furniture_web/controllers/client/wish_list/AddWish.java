@@ -1,11 +1,16 @@
 package com.it.design_pattern_furniture_web.controllers.client.wish_list;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-
+import com.it.design_pattern_furniture_web.models.services.wish.WishService;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.wish_items.WishItemCreateRequest;
 import com.it.design_pattern_furniture_web.utils.StringUtils;
 
-import javax.servlet.annotation.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -19,7 +24,7 @@ public class AddWish extends HttpServlet {
 
         HttpSession session = request.getSession();
         UserViewModel user = (UserViewModel) session.getAttribute("user");
-        if(user == null)
+        if (user == null)
             return;
         int userId = user.getId();
         int wishId = WishService.getInstance().getWishIdByUserId(userId);
@@ -31,9 +36,9 @@ public class AddWish extends HttpServlet {
 
         int count = WishService.getInstance().insertWishItem(createReq);
 
-        if(count <= 0){
+        if (count <= 0) {
             out.println("error");
-        }else{
+        } else {
             user.setTotalWishListItem(user.getTotalWishListItem() + 1);
             session.setAttribute("user", user);
             out.println(user.getTotalWishListItem() + "success");

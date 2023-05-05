@@ -4,14 +4,14 @@ import com.it.design_pattern_furniture_web.models.services.cart.CartService;
 import com.it.design_pattern_furniture_web.models.services.order.OrderService;
 import com.it.design_pattern_furniture_web.models.services.paypal.PayPalService;
 import com.it.design_pattern_furniture_web.models.services.user.UserService;
+import com.it.design_pattern_furniture_web.models.view_models.orders.OrderCreateRequest;
 import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
 import com.it.design_pattern_furniture_web.utils.ServletUtils;
 import com.it.design_pattern_furniture_web.utils.SessionUtils;
 import com.it.design_pattern_furniture_web.utils.StringUtils;
+import com.it.design_pattern_furniture_web.utils.constants.ORDER_PAYMENT;
+import com.it.design_pattern_furniture_web.utils.constants.ORDER_STATUS;
 import com.paypal.base.rest.PayPalRESTException;
-import models.view_models.orders.OrderCreateRequest;
-import utils.constants.ORDER_PAYMENT;
-import utils.constants.ORDER_STATUS;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
