@@ -1,10 +1,10 @@
 package com.it.design_pattern_furniture_web.common.user;
 
-import models.view_models.users.UserCreateRequest;
-import models.view_models.users.UserLoginRequest;
-import models.view_models.users.UserUpdateRequest;
-import utils.DateUtils;
-import utils.StringUtils;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserLoginRequest;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserUpdateRequest;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -37,7 +37,7 @@ public class UserUtils {
         reqCreate.setStatus(StringUtils.toInt(request.getParameter("status")));
         String[] values = request.getParameterValues("roleCheckBox");
 
-        if(values == null)
+        if (values == null)
             return reqCreate;
         ArrayList<Integer> roleIds = new ArrayList<>();
         for (String v : values) {
@@ -48,7 +48,7 @@ public class UserUtils {
         return reqCreate;
     }
 
-    public static UserLoginRequest CreateLoginRequest(HttpServletRequest request) throws ServletException, IOException{
+    public static UserLoginRequest CreateLoginRequest(HttpServletRequest request) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         UserLoginRequest loginRequest = new UserLoginRequest();
@@ -57,13 +57,15 @@ public class UserUtils {
 
         return loginRequest;
     }
+
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
 
         return DatatypeConverter.printHexBinary(hash);
     }
-    public static UserUpdateRequest CreateUserUpdateRequest(HttpServletRequest request) throws ServletException, IOException{
+
+    public static UserUpdateRequest CreateUserUpdateRequest(HttpServletRequest request) throws ServletException, IOException {
         UserUpdateRequest reqUpdate = new UserUpdateRequest();
 
         reqUpdate.setAvatar(request.getPart("avatar"));
@@ -80,10 +82,10 @@ public class UserUtils {
         reqUpdate.setStatus(StringUtils.toInt(request.getParameter("status")));
         reqUpdate.setUsername(request.getParameter("username"));
         String[] values = request.getParameterValues("roleCheckBox");
-        if(values == null)
+        if (values == null)
             return reqUpdate;
         ArrayList<Integer> roleIds = new ArrayList<>();
-        for(String v:values){
+        for (String v : values) {
             roleIds.add(StringUtils.toInt(v));
         }
         reqUpdate.setRoleIds(roleIds);
