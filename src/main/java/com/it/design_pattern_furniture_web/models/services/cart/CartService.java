@@ -48,8 +48,7 @@ public class CartService implements ICartService {
 
     @Override
     public ArrayList<CartItemViewModel> retrieveCartByUserId(int userId) {
-//        return CartRepository.getInstance().retrieveCartByUserId(userId);
-        return null;
+        return CartRepository.getInstance().retrieveCartByUserId(userId);
     }
 
     @Override

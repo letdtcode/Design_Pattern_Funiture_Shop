@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-@WebServlet(name = "AdminIndex", value = "/admin/home/lan")
+@WebServlet(name = "AdminIndex", value = "/admin/home")
 public class AdminIndex extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
