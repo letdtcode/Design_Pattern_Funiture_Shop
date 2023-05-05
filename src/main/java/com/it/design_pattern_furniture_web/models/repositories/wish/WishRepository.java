@@ -1,31 +1,33 @@
 package com.it.design_pattern_furniture_web.models.repositories.wish;
 
-import models.entities.Product;
-import models.entities.WishItem;
-import models.entities.WishList;
-import models.services.product.ProductService;
-import models.view_models.products.ProductViewModel;
-import models.view_models.wish_items.WishItemCreateRequest;
-import models.view_models.wish_items.WishItemGetPagingRequest;
-import models.view_models.wish_items.WishItemUpdateRequest;
-import models.view_models.wish_items.WishItemViewModel;
+import com.it.design_pattern_furniture_web.models.entities.Product;
+import com.it.design_pattern_furniture_web.models.entities.WishItem;
+import com.it.design_pattern_furniture_web.models.entities.WishList;
+import com.it.design_pattern_furniture_web.models.services.product.ProductService;
+import com.it.design_pattern_furniture_web.models.view_models.products.ProductViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.wish_items.WishItemCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.wish_items.WishItemGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.wish_items.WishItemUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.wish_items.WishItemViewModel;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.HibernateUtils;
+import com.it.design_pattern_furniture_web.utils.constants.PRODUCT_STATUS;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import utils.DateUtils;
-import utils.HibernateUtils;
-import utils.constants.PRODUCT_STATUS;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WishRepository implements IWishRepository {
     private static WishRepository instance = null;
-    public static WishRepository getInstance(){
-        if(instance == null)
+
+    public static WishRepository getInstance() {
+        if (instance == null)
             instance = new WishRepository();
         return instance;
     }
+
     @Override
     public int insert(WishItemCreateRequest request) {
         Session session = HibernateUtils.getSession();
@@ -44,12 +46,11 @@ public class WishRepository implements IWishRepository {
             session.persist(wishItem);
             wishItemId = wishItem.getWishItemId();
             tx.commit();
-        }catch(Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             session.close();
         }
 
@@ -72,9 +73,10 @@ public class WishRepository implements IWishRepository {
         WishItem wishItem = session.find(WishItem.class, entityId);
         return HibernateUtils.remove(wishItem);
     }
-    private String getProductStatus(int i){
+
+    private String getProductStatus(int i) {
         String status = "";
-        switch (i){
+        switch (i) {
             case PRODUCT_STATUS.IN_STOCK:
                 status = "Còn hàng";
                 break;
@@ -90,7 +92,8 @@ public class WishRepository implements IWishRepository {
         }
         return status;
     }
-    private WishItemViewModel getWishListItemViewModel(WishItem wishItem, Session session){
+
+    private WishItemViewModel getWishListItemViewModel(WishItem wishItem, Session session) {
         WishItemViewModel wishListItemViewModel = new WishItemViewModel();
         ProductViewModel product = ProductService.getInstance().retrieveProductById(wishItem.getProduct().getProductId());
         wishListItemViewModel.setWishItemId(wishItem.getWishItemId());
@@ -104,6 +107,7 @@ public class WishRepository implements IWishRepository {
         wishListItemViewModel.setProductStatus(getProductStatus(product.getStatus()));
         return wishListItemViewModel;
     }
+
     @Override
     public WishItemViewModel retrieveById(Integer entityId) {
         Session session = HibernateUtils.getSession();
@@ -119,14 +123,14 @@ public class WishRepository implements IWishRepository {
     public ArrayList<WishItemViewModel> retrieveAll(WishItemGetPagingRequest request) {
         ArrayList<WishItemViewModel> list = new ArrayList<>();
         Session session = HibernateUtils.getSession();
-        int offset = (request.getPageIndex() - 1)*request.getPageSize();
+        int offset = (request.getPageIndex() - 1) * request.getPageSize();
         String cmd = HibernateUtils.getRetrieveAllQuery("WishItem", request);
         Query q = session.createQuery(cmd);
         q.setFirstResult(offset);
         q.setMaxResults(request.getPageSize());
         List<WishItem> wishItems = q.list();
 
-        for(WishItem wishItem : wishItems){
+        for (WishItem wishItem : wishItems) {
             WishItemViewModel v = getWishListItemViewModel(wishItem, session);
             list.add(v);
         }
@@ -138,12 +142,12 @@ public class WishRepository implements IWishRepository {
     public int getWishIdByUserId(int userId) {
         Session session = HibernateUtils.getSession();
         Query q = session.createQuery("select wishListId from WishList where user.userId =:s1");
-        q.setParameter("s1",userId);
+        q.setParameter("s1", userId);
         Object o = q.getSingleResult();
         session.close();
-        if(o == null)
+        if (o == null)
             return -1;
-        return (int)o;
+        return (int) o;
     }
 
     @Override
@@ -154,7 +158,7 @@ public class WishRepository implements IWishRepository {
         Query q = session.createQuery("from WishItem where wishList.wishListId=:s1");
         q.setParameter("s1", wishId);
         List<WishItem> wishItems = q.list();
-        for(WishItem wishItem : wishItems){
+        for (WishItem wishItem : wishItems) {
             WishItemViewModel v = getWishListItemViewModel(wishItem, session);
             list.add(v);
         }

@@ -1,9 +1,9 @@
 package com.it.design_pattern_furniture_web.controllers.admin.review;
 
-import models.services.review.ReviewService;
-import models.view_models.review_items.ReviewItemGetPagingRequest;
-import models.view_models.review_items.ReviewItemViewModel;
-import utils.ServletUtils;
+import com.it.design_pattern_furniture_web.models.services.review.ReviewService;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.review_items.ReviewItemViewModel;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +21,10 @@ public class GetReviews extends HttpServlet {
 
         ArrayList<ReviewItemViewModel> reviews = ReviewService.getInstance().retrieveAllReviewItem(req);
 
-        request.setAttribute("reviews",reviews);
+        request.setAttribute("reviews", reviews);
         String error = request.getParameter("error");
-        if(error != null && !error.equals("")){
-            request.setAttribute("error",error);
+        if (error != null && !error.equals("")) {
+            request.setAttribute("error", error);
         }
         ServletUtils.forward(request, response, "/views/admin/review/review.jsp");
 

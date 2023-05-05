@@ -1,12 +1,12 @@
 package com.it.design_pattern_furniture_web.controllers.client.checkout;
 
+import com.it.design_pattern_furniture_web.models.services.order.OrderService;
+import com.it.design_pattern_furniture_web.models.services.paypal.PayPalService;
+import com.it.design_pattern_furniture_web.models.view_models.orders.OrderCreateRequest;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.SessionUtils;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import models.services.order.OrderService;
-import models.services.paypal.PayPalService;
-import models.view_models.orders.OrderCreateRequest;
-import utils.ServletUtils;
-import utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ public class HandleThirdPartyPayment extends HttpServlet {
         String paymentId = request.getParameter("paymentId");
         String payerId = request.getParameter("PayerID");
         int userId = SessionUtils.getUserIdLogin(request);
-        if(userId == 0) {
+        if (userId == 0) {
             ServletUtils.redirect(response, request.getContextPath() + "/cart/items?error=true");
             return;
         }
@@ -38,7 +38,7 @@ public class HandleThirdPartyPayment extends HttpServlet {
         HttpSession session = request.getSession();
         OrderCreateRequest orderCreateRequest = (OrderCreateRequest) session.getAttribute("createOrderReq");
         boolean res = OrderService.getInstance().createOrder(request, orderCreateRequest, userId);
-        if(!res){
+        if (!res) {
             ServletUtils.redirect(response, request.getContextPath() + "/cart/items?error=true");
             return;
         }

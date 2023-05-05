@@ -1,19 +1,27 @@
 package com.it.design_pattern_furniture_web.models.repositories.mail_verified_token;
 
+import com.it.design_pattern_furniture_web.models.entities.MailConfirmToken;
+import com.it.design_pattern_furniture_web.models.entities.User;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.HibernateUtils;
+import com.it.design_pattern_furniture_web.utils.constants.EMAIL_VERIFY_TOKEN_EXPIRATION;
+import com.it.design_pattern_furniture_web.utils.constants.USER_STATUS;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.UUID;
 
-public class VerifyTokenRepository implements IVerifyTokenRepository{
+public class VerifyTokenRepository implements IVerifyTokenRepository {
 
     private static VerifyTokenRepository instance = null;
-    public static VerifyTokenRepository getInstance(){
-        if(instance == null)
+
+    public static VerifyTokenRepository getInstance() {
+        if (instance == null)
             instance = new VerifyTokenRepository();
         return instance;
     }
+
     @Override
     public int insertToken(int userId) {
         Session session = HibernateUtils.getSession();
@@ -25,13 +33,13 @@ public class VerifyTokenRepository implements IVerifyTokenRepository{
         token.setUser(session.find(User.class, userId));
         token.setVerifyToken(UUID.randomUUID().toString());
         token.setDateExpired(DateUtils.dateTimeNow().plusMinutes(EMAIL_VERIFY_TOKEN_EXPIRATION.EXPIRED));
-        try{
+        try {
             tx = session.beginTransaction();
             session.persist(token);
             tx.commit();
             verifyTokenId = token.getId();
-        }catch (Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             e.printStackTrace();
         }
@@ -46,20 +54,19 @@ public class VerifyTokenRepository implements IVerifyTokenRepository{
         q.setParameter("s1", token);
         Transaction tx = null;
         int userId = -1;
-        try{
-            MailConfirmToken confirmToken = (MailConfirmToken)q.getSingleResult();
+        try {
+            MailConfirmToken confirmToken = (MailConfirmToken) q.getSingleResult();
 
             tx = session.beginTransaction();
             session.remove(confirmToken);
             tx.commit();
             userId = confirmToken.getUser().getUserId();
-        }catch(Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             session.close();
             return -1;
-        }
-        finally {
+        } finally {
             session.close();
         }
         return userId;
@@ -71,9 +78,9 @@ public class VerifyTokenRepository implements IVerifyTokenRepository{
         Transaction tx = null;
         Query q = session.createQuery("from MailConfirmToken where verifyToken=:s1");
         q.setParameter("s1", token);
-        try{
-            MailConfirmToken confirmToken = (MailConfirmToken)q.getSingleResult();
-            if(DateUtils.dateTimeNow().isAfter(confirmToken.getDateExpired())) {
+        try {
+            MailConfirmToken confirmToken = (MailConfirmToken) q.getSingleResult();
+            if (DateUtils.dateTimeNow().isAfter(confirmToken.getDateExpired())) {
                 session.close();
                 return "expired";
             }
@@ -83,8 +90,8 @@ public class VerifyTokenRepository implements IVerifyTokenRepository{
             tx = session.beginTransaction();
             session.merge(user);
             tx.commit();
-        }catch (Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             e.printStackTrace();
             session.close();
@@ -99,7 +106,7 @@ public class VerifyTokenRepository implements IVerifyTokenRepository{
         Session session = HibernateUtils.getSession();
         MailConfirmToken confirmToken = session.find(MailConfirmToken.class, verifyTokenId);
         session.close();
-        if(confirmToken == null)
+        if (confirmToken == null)
             return "";
         return confirmToken.getVerifyToken();
     }

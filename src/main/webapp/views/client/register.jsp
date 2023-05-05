@@ -1,4 +1,4 @@
-<%@ page import="utils.constants.USER_GENDER" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.USER_GENDER" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html>

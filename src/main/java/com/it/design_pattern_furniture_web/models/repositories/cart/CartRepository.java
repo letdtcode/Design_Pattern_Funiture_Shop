@@ -14,7 +14,6 @@ import com.it.design_pattern_furniture_web.models.view_models.products.ProductVi
 import com.it.design_pattern_furniture_web.utils.DateUtils;
 import com.it.design_pattern_furniture_web.utils.HibernateUtils;
 import com.it.design_pattern_furniture_web.utils.constants.PRODUCT_STATUS;
-import models.repositories.cart.ICartRepository;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

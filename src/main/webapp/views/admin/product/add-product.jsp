@@ -1,9 +1,9 @@
-<%@ page import="utils.constants.PRODUCT_STATUS" %>
-<%@ page import="utils.constants.IMAGE_PER_PRODUCT" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.PRODUCT_STATUS" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.IMAGE_PER_PRODUCT" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<jsp:useBean id="categories" scope="request" type="java.util.ArrayList<models.view_models.categories.CategoryViewModel>"/>
-<jsp:useBean id="brands" scope="request" type="java.util.ArrayList<models.view_models.brands.BrandViewModel>"/>
+<jsp:useBean id="categories" scope="request" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.categories.CategoryViewModel>"/>
+<jsp:useBean id="brands" scope="request" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.brands.BrandViewModel>"/>
 <html>
     <head>
         <meta charset="utf-8" />

@@ -1,7 +1,7 @@
-<%@ page import="utils.constants.DISCOUNT_STATUS" %>
+<%@ page import="com.it.design_pattern_furniture_web.utils.constants.DISCOUNT_STATUS" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:useBean id="discounts" type="java.util.ArrayList<models.view_models.discounts.DiscountViewModel>" scope="request"/>
+<jsp:useBean id="discounts" type="java.util.ArrayList<com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountViewModel>" scope="request"/>
 <html>
 <head>
   <meta charset="utf-8" />

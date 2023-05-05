@@ -1,9 +1,9 @@
 package com.it.design_pattern_furniture_web.controllers.admin.role;
 
-import models.services.role.RoleService;
-import models.view_models.roles.RoleGetPagingRequest;
-import models.view_models.roles.RoleViewModel;
-import utils.ServletUtils;
+import com.it.design_pattern_furniture_web.models.services.role.RoleService;
+import com.it.design_pattern_furniture_web.models.view_models.roles.RoleGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.roles.RoleViewModel;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,12 +20,12 @@ public class GetRoles extends HttpServlet {
         RoleGetPagingRequest req = new RoleGetPagingRequest();
         ArrayList<RoleViewModel> roles = RoleService.getInstance().retrieveAllRole(req);
 
-        request.setAttribute("roles",roles);
+        request.setAttribute("roles", roles);
         String error = request.getParameter("error");
-        if(error != null && !error.equals("")){
-            request.setAttribute("error",error);
+        if (error != null && !error.equals("")) {
+            request.setAttribute("error", error);
         }
-        ServletUtils.forward(request,response,"/views/admin/role/role.jsp");
+        ServletUtils.forward(request, response, "/views/admin/role/role.jsp");
     }
 
     @Override

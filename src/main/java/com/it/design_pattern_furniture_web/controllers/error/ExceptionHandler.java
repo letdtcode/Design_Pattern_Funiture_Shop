@@ -1,6 +1,6 @@
 package com.it.design_pattern_furniture_web.controllers.error;
 
-import utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,11 +14,11 @@ public class ExceptionHandler extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = "/views/client/common/error/error.jsp";
-        if(request.getAttribute("javax.servlet.forward.request_uri").toString().contains("admin")){
+        if (request.getAttribute("javax.servlet.forward.request_uri").toString().contains("admin")) {
             url = "/views/admin/common/error/error.jsp";
         }
 
-        ServletUtils.forward(request,response,url);
+        ServletUtils.forward(request, response, url);
     }
 
     @Override

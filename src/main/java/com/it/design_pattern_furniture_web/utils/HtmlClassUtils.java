@@ -1,7 +1,7 @@
 package com.it.design_pattern_furniture_web.utils;
 
-import utils.constants.ORDER_STATUS;
-import utils.constants.PRODUCT_STATUS;
+import com.it.design_pattern_furniture_web.utils.constants.ORDER_STATUS;
+import com.it.design_pattern_furniture_web.utils.constants.PRODUCT_STATUS;
 
 public class HtmlClassUtils {
     public static String generateProductStatusClass(int status){

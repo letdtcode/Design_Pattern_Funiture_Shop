@@ -1,26 +1,31 @@
 package com.it.design_pattern_furniture_web.models.services.paypal;
 
+import com.it.design_pattern_furniture_web.models.repositories.user.UserRepository;
 import com.it.design_pattern_furniture_web.models.view_models.cart_items.CartItemViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.orders.OrderCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
+import com.it.design_pattern_furniture_web.utils.StringUtils;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
-import utils.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PayPalService implements IPayPalService{
+public class PayPalService implements IPayPalService {
     private static final String CLIENT_ID = "AR52hDoJM7wVzALLe_nPlzKxMS8CTJfoUAeRt9IocXy4c4EDG0T2KPBwG4f38RtLYz9Pem_DDPkT0-ID";
     private static final String CLIENT_SECRET = "EHv86VipUu7nzvBRTw1Sff3BeTjPkmIjekg_Uemr-T3im9MzUJQusec2B8boB2MxwklloYQNL0RfpQqD";
     private static final String MODE = "sandbox";
     private static PayPalService instance;
-    public static PayPalService getInstance(){
-        if(instance == null)
+
+    public static PayPalService getInstance() {
+        if (instance == null)
             instance = new PayPalService();
         return instance;
     }
+
     @Override
     public String authorizePayment(ArrayList<CartItemViewModel> cartItems, OrderCreateRequest orderCreateRequest, String context) throws PayPalRESTException {
 
@@ -48,7 +53,7 @@ public class PayPalService implements IPayPalService{
         payerInfo.setEmail(orderCreateRequest.getEmail());
         payerInfo.setFirstName(user.getFirstName());
         payerInfo.setLastName(user.getLastName());
-        if(orderCreateRequest.getDiscountId() != 0)
+        if (orderCreateRequest.getDiscountId() != 0)
             payerInfo.setTaxId(String.valueOf(orderCreateRequest.getDiscountId()));
         ShippingAddress shippingAddress = new ShippingAddress();
 
@@ -86,8 +91,8 @@ public class PayPalService implements IPayPalService{
         ItemList itemList = new ItemList();
         List<Item> items = new ArrayList<>();
         BigDecimal subTotal = BigDecimal.valueOf(0);
-        for (CartItemViewModel ci:cartItems){
-            if(ci.getQuantity() == 0)
+        for (CartItemViewModel ci : cartItems) {
+            if (ci.getQuantity() == 0)
                 continue;
             Item item = new Item();
             item.setCurrency("USD");

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<jsp:useBean id="admin" class="models.view_models.users.UserViewModel" scope="session"/>
+<jsp:useBean id="admin" class="com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel" scope="session"/>
 <header class="ec-main-header" id="header">
     <nav class="navbar navbar-static-top navbar-expand-lg d-flex justify-content-between">
         <!-- Sidebar toggle button -->

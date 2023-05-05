@@ -1,27 +1,29 @@
 package com.it.design_pattern_furniture_web.models.repositories.discount;
 
-import models.entities.Discount;
-import models.view_models.discounts.DiscountCreateRequest;
-import models.view_models.discounts.DiscountGetPagingRequest;
-import models.view_models.discounts.DiscountUpdateRequest;
-import models.view_models.discounts.DiscountViewModel;
+import com.it.design_pattern_furniture_web.models.entities.Discount;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountCreateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountGetPagingRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountUpdateRequest;
+import com.it.design_pattern_furniture_web.models.view_models.discounts.DiscountViewModel;
+import com.it.design_pattern_furniture_web.utils.DateUtils;
+import com.it.design_pattern_furniture_web.utils.HibernateUtils;
+import com.it.design_pattern_furniture_web.utils.constants.DISCOUNT_STATUS;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import utils.DateUtils;
-import utils.HibernateUtils;
-import utils.constants.DISCOUNT_STATUS;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscountRepository implements IDiscountRepository{
+public class DiscountRepository implements IDiscountRepository {
     private static DiscountRepository instance = null;
-    public static DiscountRepository getInstance(){
-        if(instance == null)
+
+    public static DiscountRepository getInstance() {
+        if (instance == null)
             instance = new DiscountRepository();
         return instance;
     }
+
     @Override
     public int insert(DiscountCreateRequest request) {
         Session session = HibernateUtils.getSession();
@@ -34,10 +36,10 @@ public class DiscountRepository implements IDiscountRepository{
         discount.setDateStart(request.getStartDate());
         discount.setDateEnd(request.getEndDate());
         discount.setQuantity(request.getQuantity());
-        if(request.getQuantity() == 0){
+        if (request.getQuantity() == 0) {
             discount.setStatus(DISCOUNT_STATUS.IN_ACTIVE);
         }
-        if(request.getStatus() == DISCOUNT_STATUS.IN_ACTIVE){
+        if (request.getStatus() == DISCOUNT_STATUS.IN_ACTIVE) {
             discount.setQuantity(0);
         }
         int discountId = -1;
@@ -46,12 +48,11 @@ public class DiscountRepository implements IDiscountRepository{
             session.persist(discount);
             discountId = discount.getDiscountId();
             tx.commit();
-        }catch(Exception e){
-            if(tx != null)
+        } catch (Exception e) {
+            if (tx != null)
                 tx.rollback();
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             session.close();
         }
 
@@ -70,10 +71,10 @@ public class DiscountRepository implements IDiscountRepository{
         discount.setDateEnd(request.getEndDate());
         discount.setQuantity(request.getQuantity());
         discount.setStatus(request.getStatus());
-        if(request.getQuantity() == 0){
+        if (request.getQuantity() == 0) {
             discount.setStatus(DISCOUNT_STATUS.IN_ACTIVE);
         }
-        if(request.getStatus() == DISCOUNT_STATUS.IN_ACTIVE){
+        if (request.getStatus() == DISCOUNT_STATUS.IN_ACTIVE) {
             discount.setQuantity(0);
         }
         return HibernateUtils.merge(discount);
@@ -88,9 +89,10 @@ public class DiscountRepository implements IDiscountRepository{
         session.close();
         return HibernateUtils.merge(discount);
     }
-    private String getStatus(int i){
+
+    private String getStatus(int i) {
         String status = "";
-        switch (i){
+        switch (i) {
             case DISCOUNT_STATUS.EXPIRED:
                 status = "Hết hạn";
                 break;
@@ -109,20 +111,22 @@ public class DiscountRepository implements IDiscountRepository{
         }
         return status;
     }
-    private DiscountViewModel getDiscountViewModel(Discount discount, Session session){
+
+    private DiscountViewModel getDiscountViewModel(Discount discount, Session session) {
         DiscountViewModel discountViewModel = new DiscountViewModel();
 
         discountViewModel.setDiscountId(discount.getDiscountId());
         discountViewModel.setDiscountCode(discount.getDiscountCode());
         discountViewModel.setDiscountValue(discount.getDiscountValue());
-        discountViewModel.setStartDate(DateUtils.dateTimeToStringWithFormat(discount.getDateStart(),"yyyy-MM-dd HH:mm"));
-        discountViewModel.setEndDate(DateUtils.dateTimeToStringWithFormat(discount.getDateEnd(),"yyyy-MM-dd HH:mm"));
+        discountViewModel.setStartDate(DateUtils.dateTimeToStringWithFormat(discount.getDateStart(), "yyyy-MM-dd HH:mm"));
+        discountViewModel.setEndDate(DateUtils.dateTimeToStringWithFormat(discount.getDateEnd(), "yyyy-MM-dd HH:mm"));
         discountViewModel.setStatus(discount.getStatus());
         discountViewModel.setQuantity(discount.getQuantity());
         discountViewModel.setStatusCode(getStatus(discount.getStatus()));
 
         return discountViewModel;
     }
+
     @Override
     public DiscountViewModel retrieveById(Integer entityId) {
         Session session = HibernateUtils.getSession();
@@ -138,14 +142,14 @@ public class DiscountRepository implements IDiscountRepository{
     public ArrayList<DiscountViewModel> retrieveAll(DiscountGetPagingRequest request) {
         ArrayList<DiscountViewModel> list = new ArrayList<>();
         Session session = HibernateUtils.getSession();
-        int offset = (request.getPageIndex() - 1)*request.getPageSize();
+        int offset = (request.getPageIndex() - 1) * request.getPageSize();
         String cmd = HibernateUtils.getRetrieveAllQuery("Discount", request);
         Query q = session.createQuery(cmd);
         q.setFirstResult(offset);
         q.setMaxResults(request.getPageSize());
         List<Discount> discounts = q.list();
 
-        for(Discount discount:discounts){
+        for (Discount discount : discounts) {
             DiscountViewModel v = getDiscountViewModel(discount, session);
             list.add(v);
         }
@@ -163,7 +167,7 @@ public class DiscountRepository implements IDiscountRepository{
             if (discount == null)
                 return null;
             return getDiscountViewModel((Discount) discount, session);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -172,10 +176,10 @@ public class DiscountRepository implements IDiscountRepository{
     public boolean updateQuantity(int discountId) {
         Session session = HibernateUtils.getSession();
         Discount discount = session.find(Discount.class, discountId);
-        if(discount.getQuantity() == 0)
+        if (discount.getQuantity() == 0)
             return false;
         discount.setQuantity(discount.getQuantity() - 1);
-        if(discount.getQuantity() == 0){
+        if (discount.getQuantity() == 0) {
             discount.setQuantity(0);
             discount.setStatus(DISCOUNT_STATUS.IN_ACTIVE);
         }

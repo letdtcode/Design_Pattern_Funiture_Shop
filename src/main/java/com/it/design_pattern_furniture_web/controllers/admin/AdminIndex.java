@@ -1,13 +1,11 @@
 package com.it.design_pattern_furniture_web.controllers.admin;
 
+import com.it.design_pattern_furniture_web.models.services.order.OrderService;
 import com.it.design_pattern_furniture_web.models.services.user.UserService;
+import com.it.design_pattern_furniture_web.models.view_models.orders.OrderOverviewViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.orders.OrderViewModel;
 import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
-import models.services.order.OrderService;
-import models.services.user.UserService;
-import models.view_models.orders.OrderOverviewViewModel;
-import models.view_models.orders.OrderViewModel;
-import models.view_models.users.UserViewModel;
-import utils.ServletUtils;
+import com.it.design_pattern_furniture_web.utils.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,14 +31,14 @@ public class AdminIndex extends HttpServlet {
 
         OrderOverviewViewModel statistics = OrderService.getInstance().getOrderOverviewStatistics();
 
-        request.setAttribute("totalUsers",totalUsers);
-        request.setAttribute("totalOrders",totalOrders);
-        request.setAttribute("totalRevenue",totalRevenue);
+        request.setAttribute("totalUsers", totalUsers);
+        request.setAttribute("totalOrders", totalOrders);
+        request.setAttribute("totalRevenue", totalRevenue);
         request.setAttribute("customers", customers);
         request.setAttribute("orders", orders);
-        request.setAttribute("statistics",statistics);
+        request.setAttribute("statistics", statistics);
 
-        ServletUtils.forward(request,response,"/views/admin/index.jsp");
+        ServletUtils.forward(request, response, "/views/admin/index.jsp");
     }
 
     @Override

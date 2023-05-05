@@ -1,6 +1,6 @@
 package com.it.design_pattern_furniture_web.utils;
 
-import models.view_models.users.UserViewModel;
+import com.it.design_pattern_furniture_web.models.view_models.users.UserViewModel;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,16 +15,17 @@ public class ServletUtils {
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
+
     public static void redirect(HttpServletResponse response, String url)
             throws ServletException, IOException {
         response.sendRedirect(url);
     }
 
-    public static boolean isAuthenticateAdmin(HttpServletRequest request){
+    public static boolean isAuthenticateAdmin(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        UserViewModel user = (UserViewModel)session.getAttribute("admin");
-        if(user == null)
+        UserViewModel user = (UserViewModel) session.getAttribute("admin");
+        if (user == null)
             return false;
         return true;
     }
