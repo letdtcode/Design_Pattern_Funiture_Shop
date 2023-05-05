@@ -6,9 +6,15 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ecomwebapp?useUnicode=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf-8</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">20021223</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ecomwebapp?useUnicode=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf-8</property>-->
+<!--        <property name="hibernate.connection.username">root</property>-->
+<!--        <property name="hibernate.connection.password">20021223</property>-->
+
+        <!--        Database online -->
+        <property name="hibernate.connection.url">jdbc:mysql://avnadmin:AVNS_IC3GCTi7EhVoibAb-Si@mysql-3d1e2093-anhma2720-4cfe.aivencloud.com:13255/defaultdb?useUnicode=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf-8;ssl-mode=REQUIRED</property>
+        <property name="hibernate.connection.username">avnadmin</property>
+        <property name="hibernate.connection.password">AVNS_IC3GCTi7EhVoibAb-Si</property>
+
         <property name="hibernate.show_sql">true</property>
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
